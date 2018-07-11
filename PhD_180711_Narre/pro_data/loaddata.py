@@ -11,7 +11,8 @@ Chong Chen (cstchenc@163.com)
 import os
 import json
 import pandas as pd
-import pickle
+#import pickle
+import dill as pickle
 import numpy as np
 TPS_DIR = '../data/music'
 TP_file = os.path.join(TPS_DIR, 'Digital_Music_5.json')
@@ -26,10 +27,10 @@ np.random.seed(2017)
 for line in f:
     js=json.loads(line)
     if str(js['reviewerID'])=='unknown':
-        print "unknown"
+        print ("unknown")
         continue
     if str(js['asin'])=='unknown':
-        print "unknown2"
+        print ("unknown2")
         continue
     reviews.append(js['reviewText'])
     users_id.append(str(js['reviewerID'])+',')
@@ -89,13 +90,13 @@ item_reviews={}
 user_rid={}
 item_rid={}
 for i in data.values:
-    if user_reviews.has_key(i[0]):
+    if i[0] in user_reviews:
         user_reviews[i[0]].append(i[3])
         user_rid[i[0]].append(i[1])
     else:
         user_rid[i[0]]=[i[1]]
         user_reviews[i[0]]=[i[3]]
-    if item_reviews.has_key(i[1]):
+    if i[1] in user_reviews:
         item_reviews[i[1]].append(i[3])
         item_rid[i[1]].append(i[0])
     else:
@@ -104,12 +105,12 @@ for i in data.values:
 
 
 for i in data2.values:
-    if user_reviews.has_key(i[0]):
+    if i[0] in user_reviews:
         l=1
     else:
         user_rid[i[0]]=[0]
         user_reviews[i[0]]=['0']
-    if item_reviews.has_key(i[1]):
+    if i[1] in user_reviews:
         l=1
     else:
         item_reviews[i[1]] = [0]
@@ -123,6 +124,6 @@ pickle.dump(item_rid, open(os.path.join(TPS_DIR, 'item_rid'), 'wb'))
 usercount, itemcount = get_count(data, 'user_id'), get_count(data, 'item_id')
 
 
-print np.sort(np.array(usercount.values))
+print (np.sort(np.array(usercount.values)))
 
-print np.sort(np.array(itemcount.values))
+print (np.sort(np.array(itemcount.values)))
