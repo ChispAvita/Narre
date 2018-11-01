@@ -8,6 +8,7 @@ import csv
 #import pickle
 import dill as pickle
 import os
+import codecs
 
 tf.flags.DEFINE_string("valid_data", "../data/music/music_valid.csv", " Data for validation")
 tf.flags.DEFINE_string("test_data", "../data/music/music_test.csv", "Data for testing")
@@ -183,13 +184,18 @@ def load_data_and_labels(train_data, valid_data, user_review, item_review, user_
     # Load data from files
 
 
+
     f_train = open(train_data, "r")
-    f1 = open(user_review)
+    
+    with codecs.open(user_review, "r",encoding='utf-8', errors='ignore') as f1:
+        user_reviews = pickle.load(f1)
+    
+    #f1 = open(user_review)
     f2 = open(item_review)
     f3 = open(user_rid)
     f4 = open(item_rid)
 
-    user_reviews = pickle.load(f1)
+    #user_reviews = pickle.load(f1)
     item_reviews = pickle.load(f2)
     user_rids = pickle.load(f3)
     item_rids = pickle.load(f4)
